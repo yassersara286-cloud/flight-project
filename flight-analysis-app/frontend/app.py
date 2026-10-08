@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import calendar
 import os
+from datetime import time
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -226,7 +227,7 @@ def render_prediction() -> None:
             day_of_week = st.selectbox(
                 "Day of week", range(1, 8), format_func=lambda value: calendar.day_name[value - 1]
             )
-            departure_time = st.number_input("Scheduled departure time (HHMM)", min_value=0, max_value=2359, value=900, step=5)
+            departure_time = st.time_input("Scheduled departure time (HH:MM)", value=time(9, 0), step=300)
         with weather_column:
             st.markdown("#### Weather conditions")
             visibility = st.number_input("Visibility (miles)", min_value=0.0, value=10.0, step=0.5)
@@ -240,7 +241,7 @@ def render_prediction() -> None:
         payload = {
             "month": month,
             "day_of_week": day_of_week,
-            "crs_dep_time": departure_time,
+            "crs_dep_time": departure_time.hour * 100 + departure_time.minute,
             "weather_features": {
                 "HOURLYVISIBILITY": visibility,
                 "HOURLYDRYBULBTEMPF": temperature,
