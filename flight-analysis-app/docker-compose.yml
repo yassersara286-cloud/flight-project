@@ -11,14 +11,3 @@ services:
         - ./backend/models:${CONTAINER_MODEL_DIR:-/models}
     ports:
       - "8000:8000"
-
-  dashboard:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    environment:
-        API_BASE_URL: ${CONTAINER_API_URL:-http://api:8000}
-    depends_on:
-      - api
-    ports:
-      - "8501:8501"

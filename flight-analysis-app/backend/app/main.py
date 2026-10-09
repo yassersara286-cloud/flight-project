@@ -6,6 +6,8 @@ from pathlib import Path
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from backend.app.analytics import build_analytics, load_flight_data
@@ -17,6 +19,13 @@ app = FastAPI(
     version="1.0.0",
     description="Flight and weather analytics with departure-delay probability estimates.",
 )
+FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
+app.mount("/assets", StaticFiles(directory=FRONTEND_DIR), name="frontend-assets")
+
+
+@app.get("/", include_in_schema=False)
+def frontend() -> FileResponse:
+    return FileResponse(FRONTEND_DIR / "index.html")
 
 
 class PredictionRequest(BaseModel):
