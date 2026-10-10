@@ -27,6 +27,7 @@ function setSystemStatus(health) {
   byId("model-dot").classList.toggle("ready", health.model_available);
   byId("model-dot").classList.toggle("unavailable", !health.model_available);
   byId("model-status").textContent = health.model_available ? "Model ready" : "Model unavailable";
+  byId("predict-button").disabled = !health.model_available;
 }
 
 function showError(id, message) {

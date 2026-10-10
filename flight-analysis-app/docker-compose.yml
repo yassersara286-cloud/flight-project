@@ -11,3 +11,16 @@ services:
         - ./backend/models:${CONTAINER_MODEL_DIR:-/models}
     ports:
       - "8000:8000"
+
+  gradio:
+    build:
+      context: .
+      dockerfile: frontend/Gradio.Dockerfile
+    environment:
+      API_BASE_URL: http://api:8000
+      GRADIO_SERVER_NAME: 0.0.0.0
+      GRADIO_SERVER_PORT: 7860
+    depends_on:
+      - api
+    ports:
+      - "7860:7860"
