@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+        FLIGHT_DATA_PATH: ${CONTAINER_DATA_PATH:-/data/merged_flight_weather_data.csv}
+        MODEL_PATH: ${CONTAINER_MODEL_PATH:-/models/flight_delay_model.pkl}
+    volumes:
+        - ../merged_flight_weather_data.csv:${CONTAINER_DATA_PATH:-/data/merged_flight_weather_data.csv}:ro
+        - ./backend/models:${CONTAINER_MODEL_DIR:-/models}
+    ports:
+      - "8000:8000"
